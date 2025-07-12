@@ -1,0 +1,27 @@
+name: Daily Faucet Claim
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Klaim setiap hari jam 07:00 UTC (14:00 WIB)
+  workflow_dispatch:
+
+jobs:
+  faucet-claim:
+    runs-on: ubuntu-latest
+    env:
+      WALLET_ADDRESS: ${{ secrets.WALLET_ADDRESS }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run faucet claimer
+        run: python main.py
